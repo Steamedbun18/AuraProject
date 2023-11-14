@@ -4,10 +4,17 @@
 #include "Player/AuraPlayerController.h"
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
+#include "Interfaces/ITargetedInterface.h"
 
 AAuraPlayerController::AAuraPlayerController()
 {
 	bReplicates = true;
+}
+
+void AAuraPlayerController::PlayerTick(float DeltaTime)
+{
+	Super::PlayerTick(DeltaTime);
+	CursorTrace();
 }
 
 void AAuraPlayerController::BeginPlay()
@@ -78,5 +85,64 @@ void AAuraPlayerController::Move(const FInputActionValue& InputActionValue)
 
 	
 
+	
+}
+
+void AAuraPlayerController::CursorTrace()
+{
+	FHitResult CursorHit;
+	GetHitResultUnderCursor(ECC_Visibility, false, CursorHit);
+
+	if (!CursorHit.bBlockingHit) return;
+
+	LastActor = CurrentActor;
+	CurrentActor = Cast<IITargetedInterface>(CursorHit.GetActor());
+
+	/*
+	 * Cases for highlighting
+	 *A: both null
+	 *		do nothing
+	 *B: last actor null this current actor valid
+	 *		highlight this actor
+	 *C: last actor valid and current valid but not same
+	 *		unhighlight last and highlight current
+	 *D: both valid and same
+	 *		do nothing
+	 *E: last actor valid and current not valid
+	 *		unhighlight last
+	 */
+
+	if (LastActor == nullptr)
+	{
+		if(CurrentActor == nullptr)
+		{
+			// case A: do nothing
+		}
+		else
+		{
+			// case b: highlight current
+			CurrentActor->Highlight();
+		}
+	}
+	else
+	{
+		if (CurrentActor == nullptr)
+		{
+			// case E
+			LastActor->Unhighlight();
+		}
+		else
+		{
+			if (LastActor == CurrentActor)
+			{
+				// case D do nothing
+			}
+			else
+			{
+				LastActor->Unhighlight();
+				CurrentActor->Highlight();
+			}
+		}
+	}
 	
 }

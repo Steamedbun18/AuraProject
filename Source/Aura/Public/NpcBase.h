@@ -17,8 +17,14 @@ class AURA_API ANpcBase : public ACharacterBase, public IITargetedInterface
 
 
 public:
+	ANpcBase();
 
 	virtual void Highlight() override;
 	virtual void Unhighlight() override;
+
+protected:
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	bool isTargeted;
 	
 };

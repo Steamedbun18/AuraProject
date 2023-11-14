@@ -10,6 +10,7 @@
 class UInputMappingContext;
 class UInputAction;
 struct FInputActionValue;
+class IITargetedInterface;
 
 /**
  * 
@@ -22,12 +23,16 @@ public:
 	// constructor
 	AAuraPlayerController();
 
+	virtual void PlayerTick(float DeltaTime) override;
+
 protected:
 	// begin play
 	virtual void BeginPlay() override;
 	
 	// function to setup input
 	virtual void SetupInputComponent() override;
+
+
 
 private:
 	// pointer for the input mapping
@@ -41,4 +46,9 @@ private:
 	// call back function to be called when our input action is triggered
 	// requires input of the FInputAction value struct ref 
 	void Move(const FInputActionValue& InputActionValue);
+
+	void CursorTrace();
+	
+	IITargetedInterface* LastActor;
+	IITargetedInterface* CurrentActor;
 };
