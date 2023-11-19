@@ -7,6 +7,7 @@
 #include "Interfaces/ITargetedInterface.h"
 #include "NpcBase.generated.h"
 
+
 /**
  * 
  */
@@ -18,13 +19,18 @@ class AURA_API ANpcBase : public ACharacterBase, public IITargetedInterface
 
 public:
 	ANpcBase();
+	
 
+	/** from target interface **/
 	virtual void Highlight() override;
 	virtual void Unhighlight() override;
+	/** end target interface **/
 
 protected:
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	bool isTargeted;
 	
+	virtual void BeginPlay() override;
+
 };

@@ -3,6 +3,9 @@
 
 #include "CharacterBase.h"
 
+#include "AbilitySystem/AuraAbilitySystemComponent.h"
+#include "AbilitySystem/AuraAttributeSet.h"
+
 // Sets default values
 ACharacterBase::ACharacterBase()
 {
@@ -17,6 +20,13 @@ ACharacterBase::ACharacterBase()
 
 	// sets no collision
 	Weapon->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+
+}
+
+UAbilitySystemComponent* ACharacterBase::GetAbilitySystemComponent() const
+{
+	return AbilitySystemComponent;
 }
 
 // Called when the game starts or when spawned
